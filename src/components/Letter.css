@@ -1,0 +1,25 @@
+.letter {
+    width: 2.5em;
+    height: 2.5em;
+    border: 1px #D7D7D7 solid;
+    border-radius: 5px;
+    background: #FCBA29;
+    color: #1E1E1E;
+    font-family: "Hanken Grotesk", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out;
+}
+
+.letter:active {
+    transform: translateY(2px);
+}
+
+.letter.wrong {
+    background: #EC5D49;
+}
+
+.letter.right {
+    background: #10A95B;
+}
