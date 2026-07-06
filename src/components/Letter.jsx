@@ -1,8 +1,9 @@
 import "./Letter.css"
 
-export default function Letter(props) {
-    const { value, usage } = props
+export default function Letter({ value, used, correct, handleClick }) {
     return (
-        <button className="letter">{value}</button>
+        <button className={used?correct?"right letter":"wrong letter":"letter"}
+            onClick={handleClick}
+        >{value}</button>
     )
 }
