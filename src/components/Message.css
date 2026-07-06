@@ -1,0 +1,36 @@
+.message-box {
+    margin: 2rem auto;
+    width: 25rem;
+    text-align: center;
+    background: #7A5EA7;
+    border-radius: 5px;
+    padding: 0.5rem;
+    min-height: 3rem;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    justify-content: center;
+}
+.message-main:only-child{
+    font-style: italic;
+}
+
+.message-main {
+    margin: 0.125em;
+    font-size: 1.25rem;
+    font-weight: 400;
+}
+
+.message-subtitle {
+    margin: 0.25em;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.message-box.good {
+    background: #10A95B;
+}
+
+.message-box.bad {
+    background: #BA2A2A;
+}
