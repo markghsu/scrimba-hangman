@@ -1,9 +1,10 @@
 import './Hangman.css'
-import Letter from "./components/Letter"
-import Message from "./components/Message"
 import wordList from "./words.json"
 import livesData from "./lives.json"
+import Letter from "./components/Letter"
+import Message from "./components/Message"
 import Block from "./components/Block"
+import WordLetter from "./components/WordLetter"
 import { useState } from "react"
 
 const TOTAL_LIVES=livesData.length - 1;
@@ -50,7 +51,7 @@ export default function Hangman() {
   const message = didLose()?"You Lost!":didWin()?"You Won!":"Keep playing"
   return (
     <>
-      <h1>Assembly: Endgame</h1>
+      <h1 className="heading">Assembly: Endgame</h1>
       <p>{`Guess the word in under ${TOTAL_LIVES} attempts to keep the programming world safe from Assembly`}</p>
       <main>
         <div className="messageHolder" aria-live="polite">{ message && <Message main={message} subtitle="subtitle goes here" /> }</div>
@@ -61,9 +62,15 @@ export default function Hangman() {
             ))
           }
         </section>
-        <div className="word">{word}</div>
+        <div className="word-container">
+          {
+            word.split("").map((ele,idx) => (
+              <WordLetter key={idx} value={letters.find((l) => l.value === ele && l.correct)?ele:" "} /> 
+            ))
+          }
+        </div>
         <div className="grid">
-          {letters.map((ele) => (<Letter key={ele.value} {...ele} handleClick={() => pressLetter(ele.value)} />))}
+          {letters.map((ele) => (<Letter key={ele.value} {...ele} handleClick={() => pressLetter(ele.value)} disabled={didLose()} />))}
         </div>
       </main>
     </>

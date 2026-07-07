@@ -2,6 +2,14 @@ body {
     background: #282726;
     color: #F9F4DA;
     font-family: "Hanken Grotesk", sans-serif;
+    text-align: center;
+}
+
+.word-container {
+    margin: 2rem auto;
+    display: flex;
+    justify-content: center;
+    gap: 0.125rem;
 }
 
 .grid {

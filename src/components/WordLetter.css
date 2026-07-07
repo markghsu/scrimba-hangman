@@ -1,0 +1,12 @@
+.word-letter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.5em;
+    height: 2.5em;
+    border-bottom: 1px #F9F4DA solid;
+    background: #323232;
+    color: #F9F4DA;
+    font-size: 1.125rem;
+    font-weight: 600;
+}
