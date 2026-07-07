@@ -2,9 +2,11 @@ import './Hangman.css'
 import Letter from "./components/Letter"
 import Message from "./components/Message"
 import wordList from "./words.json"
-import {useState} from "react"
+import livesData from "./lives.json"
+import Block from "./components/Block"
+import { useState } from "react"
 
-const TOTAL_GUESSES=8;
+const TOTAL_LIVES=livesData.length - 1;
 
 function generateAlphabet() {
   return Array.from({ length: 26 }, (el, i) => ({
@@ -21,6 +23,8 @@ function generateWordFromDictionary() {
 export default function Hangman() {
   const [letters, setLetters] = useState(generateAlphabet)
   const [word, setWord] = useState(generateWordFromDictionary)
+
+  const wrongLetterCount = letters.reduce((acc, ele) => acc + (ele.used && !ele.correct?1:0), 0)
 
   function pressLetter(l) {
     setLetters((prev) => prev.map((ele) => ({
@@ -40,17 +44,23 @@ export default function Hangman() {
   }
 
   function didLose() {
-    return letters.reduce((acc, ele) => acc + (ele.used && !ele.correct?1:0), 0) >= TOTAL_GUESSES
+    return wrongLetterCount >= TOTAL_LIVES
   }
 
   const message = didLose()?"You Lost!":didWin()?"You Won!":"Keep playing"
   return (
     <>
       <h1>Assembly: Endgame</h1>
-      <p>Guess the word in under 8 attempts to keep the programming world safe from Assembly</p>
+      <p>{`Guess the word in under ${TOTAL_LIVES} attempts to keep the programming world safe from Assembly`}</p>
       <main>
         <div className="messageHolder" aria-live="polite">{ message && <Message main={message} subtitle="subtitle goes here" /> }</div>
-        <div className="blocks"></div>
+        <section className="lives">
+          {
+            livesData.map((ele,idx) => (
+              <Block key={ele.id} {...ele} used={idx < wrongLetterCount} />
+            ))
+          }
+        </section>
         <div className="word">{word}</div>
         <div className="grid">
           {letters.map((ele) => (<Letter key={ele.value} {...ele} handleClick={() => pressLetter(ele.value)} />))}

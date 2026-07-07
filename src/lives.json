@@ -1,0 +1,56 @@
+[
+    {
+        "id": 0,
+        "value": "HTML",
+        "color": "#F9F4DA",
+        "bgcolor": "#E2680F"
+    },
+    {
+        "id": 1,
+        "value": "CSS",
+        "color": "#F9F4DA",
+        "bgcolor": "#328AF1"
+    },
+    {
+        "id": 2,
+        "value": "Javascript",
+        "color": "#1E1E1E",
+        "bgcolor": "#F4EB13"
+    },
+    {
+        "id": 3,
+        "value": "React",
+        "color": "#1E1E1E",
+        "bgcolor": "#2ED3E9"
+    },
+    {
+        "id": 4,
+        "value": "Typescript",
+        "color": "#F9F4DA",
+        "bgcolor": "#298EC6"
+    },
+    {
+        "id": 5,
+        "value": "Node.js",
+        "color": "#F9F4DA",
+        "bgcolor": "#599137"
+    },
+    {
+        "id": 6,
+        "value": "Python",
+        "color": "#282726",
+        "bgcolor": "#FFD742"
+    },
+    {
+        "id": 7,
+        "value": "Ruby",
+        "color": "#F9F4DA",
+        "bgcolor": "#D02B2B"
+    },
+    {
+        "id": 8,
+        "value": "Assembly",
+        "color": "#F9F4DA",
+        "bgcolor": "#2D519F"
+    }
+]
