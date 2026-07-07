@@ -10,6 +10,10 @@
     cursor: pointer;
     transition: transform 0.1s ease-in-out;
 }
+.letter:disabled {
+    opacity: 50%;
+    cursor: not-allowed;
+}
 
 .letter:active {
     transform: translateY(2px);

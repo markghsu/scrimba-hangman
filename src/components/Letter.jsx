@@ -5,6 +5,7 @@ export default function Letter({ value, used, correct, handleClick, disabled }) 
         <button className={used?correct?"right letter":"wrong letter":"letter"}
             onClick={handleClick}
             disabled={disabled}
+            aria-pressed={used}
         >{value}</button>
     )
 }

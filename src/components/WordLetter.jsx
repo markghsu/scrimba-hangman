@@ -1,8 +1,7 @@
 import "./WordLetter.css"
 
-export default function({value}) {
-    console.log(`value:${value}:`)
+export default function({ value, missed }) {
     return (
-        <span className="word-letter">{value}</span>
+        <span className={`word-letter ${missed?"missed":""}`}>{value}</span>
     )
 }

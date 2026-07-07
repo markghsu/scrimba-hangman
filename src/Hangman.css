@@ -5,6 +5,10 @@ body {
     text-align: center;
 }
 
+button {
+    font-family: "Hanken Grotesk", sans-serif;
+}
+
 .word-container {
     margin: 2rem auto;
     display: flex;
@@ -28,4 +32,21 @@ body {
     justify-content: center;
     max-width: 20rem;
     gap: 0.375rem;
+}
+
+.new-game {
+    background: #11B5E5;
+    color: #1E1E1E;
+    border: 1px solid #D7D7D7;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 1em 5em;
+    margin: 2em auto;
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out;
+}
+
+.new-game:active {
+    transform: translateY(2px);
 }
