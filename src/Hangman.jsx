@@ -12,7 +12,7 @@ const TOTAL_LIVES=livesData.length - 1;
 function generateAlphabet() {
   return Array.from({ length: 26 }, (el, i) => ({
       value: String.fromCharCode(65 + i),
-      used: false,
+      guessed: false,
       correct: false
   }))
 }
@@ -23,19 +23,19 @@ function generateWordFromDictionary() {
 
 export default function Hangman() {
   const [letters, setLetters] = useState(generateAlphabet)
-  //const [lastLetterPressed, setLastLetterPressed] = useState(null)
+  const [lastLetterPressed, setLastLetterPressed] = useState(null)
   const [word, setWord] = useState(generateWordFromDictionary)
 
-  const wrongLetterCount = letters.reduce((acc, ele) => acc + (ele.used && !ele.correct?1:0), 0)
-  console.log(wrongLetterCount)
+  const wrongLetterCount = letters.reduce((acc, ele) => acc + (ele.guessed && !ele.correct?1:0), 0)
+  const livesLeft = TOTAL_LIVES - wrongLetterCount
   const gameOver = didLose() || didWin()
   function pressLetter(l) {
     setLetters((prev) => prev.map((ele) => ({
       ...ele,
-      used: ele.value === l? true : ele.used,
+      guessed: ele.value === l? true : ele.guessed,
       correct: ele.value === l?word.includes(l): ele.correct
     })))
-    //setLastLetterPressed(l)
+    setLastLetterPressed(l)
   }
 
   function didWin() {
@@ -50,48 +50,72 @@ export default function Hangman() {
   function didLose() {
     return wrongLetterCount >= TOTAL_LIVES
   }
-
+  
   return (
     <>
       <h1 className="heading">Assembly: Endgame</h1>
       <p>{`Guess the word in under ${TOTAL_LIVES} attempts to keep the programming world safe from Assembly`}</p>
       <main>
-        <div className="messageHolder" aria-live="polite">{
-          wrongLetterCount > 0 && 
+        <div className="messageHolder" role="status" aria-live="polite">{
+          ((wrongLetterCount > 0) || gameOver) &&
           <Message main={
               didLose()?"Game over!":didWin()?"You win!":`Farewell ${livesData[wrongLetterCount - 1].value} 🫡`
-              //`You guessed "${lastLetterPressed}". That was ${letters.find((l) => l.value === lastLetterPressed).correct?"right.":`Wrong. Farewell ${livesData[wrongLetterCount - 1].value} 🫡`}`
-            } 
+            }
             subtitle={
               didLose()?"You lose! Better start learning Assembly 😭":didWin()?"Well done! 🎉":""
             }
             className={didLose()?"bad":didWin()?"good":""}
           />
         }</div>
-        <section aria-label={`${TOTAL_LIVES - wrongLetterCount} lives left`} className="lives">
+        <section className="sr-only" role="status" aria-live="polite">
+          <p>
+            {lastLetterPressed &&
+              (word.includes(lastLetterPressed)
+                ? `Correct! The letter ${lastLetterPressed} is in the word.`
+                : `Sorry, the letter ${lastLetterPressed} is not in the word.`)}
+            {` You have ${livesLeft} ${livesLeft === 1 ? "attempt" : "attempts"} left.`}
+          </p>
+          <p>
+            {`Current word: ${word
+              .split("")
+              .map((letter) =>
+                letters.find((l) => l.value === letter).correct ? `${letter}.` : "blank."
+              )
+              .join(" ")}`}
+          </p>
+        </section>
+
+        <section aria-label={`${livesLeft} lives left`} className="lives">
           {
             livesData.map((ele,idx) => (
-              <Block key={ele.id} {...ele} used={idx < wrongLetterCount} />
+              <Block key={ele.id} {...ele} guessed={idx < wrongLetterCount} />
             ))
           }
         </section>
-        <section aria-label={`Word to guess`} className="word-container">
+        <section aria-hidden="true" className="word-container">
           {
             word.split("").map((ele,idx) => {
               const currentLetter = letters.find((l) => l.value === ele )
-              return <WordLetter key={idx} 
+              return <WordLetter key={idx}
                   value={
                     currentLetter.correct || didLose()?ele:" "
                   }
                   missed={
                     !currentLetter.correct
                   }
-              /> 
+              />
             })
           }
         </section>
-        <section className="grid">
-          {letters.map((ele) => (<Letter key={ele.value} {...ele} handleClick={() => pressLetter(ele.value)} disabled={gameOver} />))}
+        <section className="grid" aria-label="Choose a letter">
+          {letters.map((ele) => (
+            <Letter
+              key={ele.value}
+              {...ele}
+              handleClick={() => pressLetter(ele.value)}
+              disabled={gameOver || ele.guessed}
+            />
+          ))}
         </section>
         {
           gameOver?
@@ -99,7 +123,7 @@ export default function Hangman() {
               onClick={() => {
                 setWord(generateWordFromDictionary())
                 setLetters(generateAlphabet())
-                //setLastLetterPressed(null)
+                setLastLetterPressed(null)
             }}
           >New Game</button>:null
         }
