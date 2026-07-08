@@ -5,7 +5,7 @@ import Letter from "./components/Letter"
 import Message from "./components/Message"
 import Block from "./components/Block"
 import WordLetter from "./components/WordLetter"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 const TOTAL_LIVES=livesData.length - 1;
 
@@ -29,7 +29,23 @@ export default function Hangman() {
   const wrongLetterCount = letters.reduce((acc, ele) => acc + (ele.guessed && !ele.correct?1:0), 0)
   const livesLeft = TOTAL_LIVES - wrongLetterCount
   const gameOver = didLose() || didWin()
+
+  function keyPressed (evt) {
+    if (evt.key.charCodeAt(0) > 64 && evt.key.charCodeAt(0) < 91 ||
+      evt.key.charCodeAt(0) > 96 && evt.key.charCodeAt(0) < 123) {
+      pressLetter(evt.key.toUpperCase())
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener("keydown", keyPressed)
+    return () => {
+      document.removeEventListener("keydown", keyPressed)
+    }
+  },[word, gameOver])
+
   function pressLetter(l) {
+    if(gameOver) return
     setLetters((prev) => prev.map((ele) => ({
       ...ele,
       guessed: ele.value === l? true : ele.guessed,
@@ -88,7 +104,7 @@ export default function Hangman() {
         <section aria-label={`${livesLeft} lives left`} className="lives">
           {
             livesData.map((ele,idx) => (
-              <Block key={ele.id} {...ele} guessed={idx < wrongLetterCount} />
+              <Block key={ele.id} {...ele} used={idx < wrongLetterCount} />
             ))
           }
         </section>
